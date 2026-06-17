@@ -4,4 +4,5 @@ MRuby::Gem::Specification.new("mruby-pledge") do |spec|
   spec.summary = 'Launch programs in a sandbox'
   spec.add_dependency "mruby-hardened-pledge",
                       git: "http://git.home.network/0x1eef/mruby-hardened-pledge"
+
 end

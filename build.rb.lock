@@ -2,7 +2,7 @@
 mruby:
   version: 4.0.0
   release_no: 40000
-  git_commit: 5e8a65457dc8a3e06b1a17dd482a18be382ad3fc
+  git_commit: '0094198eea6d51ba62958bc8c9010fd95d0ce289'
 builds:
   pledge:
     http://git.home.network/0x1eef/mruby-hardened-pledge:
