@@ -1,0 +1,12 @@
+---
+mruby:
+  version: 4.0.0
+  release_no: 40000
+  git_commit: 5e8a65457dc8a3e06b1a17dd482a18be382ad3fc
+builds:
+  pledge:
+    http://git.home.network/0x1eef/mruby-hardened-pledge:
+      url: http://git.home.network/0x1eef/mruby-hardened-pledge
+      branch: master
+      commit: bc9c3933d5f4a3a408d93bc759fb38f8f2340529
+      version: 0.0.0
