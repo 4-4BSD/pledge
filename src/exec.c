@@ -29,39 +29,30 @@ mrb_mruby_pledge_gem_final(mrb_state *mrb)
 static mrb_value
 myexecvp(mrb_state *mrb, mrb_value self)
 {
-  char **cargs, *file;
+  char **argv, *file;
   mrb_value *args;
   mrb_int count;
 
   mrb_get_args(mrb, "*", &args, &count);
   if(count == 0) {
     mrb_raise(mrb, E_ARGUMENT_ERROR, "No arguments given");
-  } else {
-    cargs = calloc(count + 1, sizeof(char*));
-    if (cargs == NULL) {
-      mrb_sys_fail(mrb, "calloc");
-    }
   }
-
+  argv = calloc(count + 1, sizeof(char*));
+  if (argv == NULL) {
+    mrb_sys_fail(mrb, "calloc");
+  }
   for(mrb_int i = 0; i < count; i++) {
     if(!mrb_string_p(args[i])) {
-      myfree(cargs, count);
+      myfree(argv, count);
       mrb_raise(mrb, E_TYPE_ERROR, "expected a string");
     }
-    if(i == 0) {
-      file = strdup(RSTRING_PTR(args[i]));
-    } else {
-      cargs[i-1] = strdup(RSTRING_PTR(args[i]));
-    }
+    char *str = RSTRING_PTR(args[i]);
+    argv[i] = strdup(str);
   }
 
-  if(count == 1) {
-    cargs[0] = "";
-    cargs[1] = NULL;
-  }
-
-  if (execvp(file, cargs) == -1) {
-    myfree(cargs, count);
+  file = argv[0];
+  if (execvp(file, argv) == -1) {
+    myfree(argv, count);
     mrb_sys_fail(mrb, "execvp");
   }
 
@@ -77,9 +68,16 @@ myexit(mrb_state *mrb, mrb_value self) {
 
 static mrb_value
 mywarn(mrb_state *mrb, mrb_value self) {
-  const char *warning;
-  mrb_get_args(mrb, "z", &warning);
-  fprintf(stderr, "%s\n", warning);
+  mrb_value *args;
+  mrb_int count;
+
+  mrb_get_args(mrb, "*", &args, &count);
+  if (count == 0) {
+    mrb_raise(mrb, E_ARGUMENT_ERROR, "Expected at least one argument, got none");
+  }
+  for (mrb_int i = 0; i < count; i++) {
+    fprintf(stderr, "%s", RSTRING_PTR(args[i]));
+  }
   return mrb_nil_value();
 }
 
