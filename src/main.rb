@@ -7,13 +7,14 @@ def main(argv)
   # a process. The new process inherits these abilities,
   # plus whatever other pledges are provided at the command
   # line.
-  pledges = ["exec", "proc", "rpath", "stdio"]
+  pledges = ["exec", "proc"]
+  execpledges = []
   command = []
   if argv.empty?
     return help
   end
-  parse_options(argv, pledges, command)
-  pledge(pledges.join(" "))
+  parse_options(argv, execpledges, command)
+  pledge([*pledges, *execpledges].join(" "), execpledges.join(" "))
   execvp(*command)
 end
 
