@@ -2,19 +2,11 @@
 # main
 
 def main(argv)
-  ##
-  # The following pledges are required to bootstrap
-  # a process. The new process inherits these abilities,
-  # plus whatever other pledges are provided at the command
-  # line.
-  pledges = ["exec", "proc"]
-  execpledges = []
+  pledges = {parent: ["exec", "proc"], child: []}
   command = []
-  if argv.empty?
-    return help
-  end
-  parse_options(argv, execpledges, command)
-  pledge([*pledges, *execpledges].join(" "), execpledges.join(" "))
+  return help if argv.empty?
+  parse_options(argv, pledges, command)
+  pledge([*pledges[:parent], *pledges[:child]].join(" "), pledges[:child].join(" "))
   execvp(*command)
 end
 
@@ -54,7 +46,7 @@ def parse_options(argv, pledges, command)
       if has_command
         command.push(option)
       else
-        pledges.push(argv.shift)
+        pledges[:child].push(argv.shift)
         has_pledges = true
       end
     else
