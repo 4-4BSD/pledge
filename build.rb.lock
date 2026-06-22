@@ -8,5 +8,5 @@ builds:
     https://github.com/0x1eef/mruby-hardened-pledge.git:
       url: https://github.com/0x1eef/mruby-hardened-pledge.git
       branch: master
-      commit: f11b95162fe063a0f8777f535819434aad360ae8
+      commit: 0073402a3b9d1ccddab475c361e7344464fffee2
       version: 0.0.0
